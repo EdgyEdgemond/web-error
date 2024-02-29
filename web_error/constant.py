@@ -1,4 +1,1 @@
-BAD_REQUEST = 400
-NOT_FOUND = 404
-VALIDATION_ERROR = 422
-SERVER_ERROR = 500
+from http import HTTPStatus  # noqa: F401
