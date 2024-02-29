@@ -72,6 +72,17 @@ A custom logger can be provided to `generate_handler(logger=...)`.
 If you require cors headers, you can pass a `web_error.cors.CorsConfiguration`
 instance to `generate_handler(cors=...)`.
 
+```python
+generate_handler(
+    cors=CorsConfiguration(
+        allow_origins=["*"],
+        allow_methods=["*"],
+        allow_headers=["*"],
+        allow_credentials=True,
+    )
+)
+```
+
 To handle unexpected errors provide `unhandled_wrappers`, a dict mapping http
 status code to `HttpCodeException`, the system key `default` is also accepted
 as the root wrapper for all unhandled exceptions.

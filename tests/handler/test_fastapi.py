@@ -3,6 +3,7 @@ import json
 from unittest import mock
 
 import httpx
+import pytest
 from fastapi import FastAPI
 from fastapi.exceptions import RequestValidationError
 from starlette.exceptions import HTTPException
@@ -10,6 +11,16 @@ from starlette.exceptions import HTTPException
 from web_error import constant, error
 from web_error.cors import CorsConfiguration
 from web_error.handler import fastapi
+
+
+@pytest.fixture()
+def cors():
+    return CorsConfiguration(
+        allow_origins=["*"],
+        allow_methods=["*"],
+        allow_headers=["*"],
+        allow_credentials=True,
+    )
 
 
 class ATestError(error.ServerException):
@@ -157,10 +168,9 @@ class TestExceptionHandler:
         }
         assert response.headers["www-authenticate"] == "Basic"
 
-    def test_error_with_origin(self):
+    def test_error_with_origin(self, cors):
         request = mock.Mock(headers={"origin": "localhost"})
         exc = ATestError("something bad")
-        cors = CorsConfiguration()
 
         eh = fastapi.generate_handler(cors=cors)
         response = eh(request, exc)
@@ -168,11 +178,9 @@ class TestExceptionHandler:
         assert "access-control-allow-origin" in response.headers
         assert response.headers["access-control-allow-origin"] == "*"
 
-    def test_error_with_origin_and_cookie(self):
+    def test_error_with_origin_and_cookie(self, cors):
         request = mock.Mock(headers={"origin": "localhost", "cookie": "something"})
         exc = ATestError("something bad")
-
-        cors = CorsConfiguration()
 
         eh = fastapi.generate_handler(cors=cors)
         response = eh(request, exc)
@@ -180,11 +188,11 @@ class TestExceptionHandler:
         assert "access-control-allow-origin" in response.headers
         assert response.headers["access-control-allow-origin"] == "localhost"
 
-    def test_missing_token_with_origin_limited_origins(self):
+    def test_missing_token_with_origin_limited_origins(self, cors):
         request = mock.Mock(headers={"origin": "localhost", "cookie": "something"})
         exc = ATestError("something bad")
 
-        cors = CorsConfiguration(allow_origins=["localhost"])
+        cors.allow_origins = ["localhost"]
 
         eh = fastapi.generate_handler(cors=cors)
         response = eh(request, exc)
@@ -192,11 +200,11 @@ class TestExceptionHandler:
         assert "access-control-allow-origin" in response.headers
         assert response.headers["access-control-allow-origin"] == "localhost"
 
-    def test_missing_token_with_origin_limited_origins_no_match(self):
+    def test_missing_token_with_origin_limited_origins_no_match(self, cors):
         request = mock.Mock(headers={"origin": "localhost2", "cookie": "something"})
         exc = ATestError("something bad")
 
-        cors = CorsConfiguration(allow_origins=["localhost"])
+        cors.allow_origins = ["localhost"]
 
         eh = fastapi.generate_handler(cors=cors)
         response = eh(request, exc)
