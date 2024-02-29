@@ -8,6 +8,7 @@ from fastapi.exceptions import RequestValidationError
 from starlette.exceptions import HTTPException
 
 from web_error import constant, error
+from web_error.cors import CorsConfiguration
 from web_error.handler import fastapi
 
 
@@ -159,7 +160,7 @@ class TestExceptionHandler:
     def test_error_with_origin(self):
         request = mock.Mock(headers={"origin": "localhost"})
         exc = ATestError("something bad")
-        cors = fastapi.CorsConfiguration()
+        cors = CorsConfiguration()
 
         eh = fastapi.generate_handler(cors=cors)
         response = eh(request, exc)
@@ -171,7 +172,7 @@ class TestExceptionHandler:
         request = mock.Mock(headers={"origin": "localhost", "cookie": "something"})
         exc = ATestError("something bad")
 
-        cors = fastapi.CorsConfiguration()
+        cors = CorsConfiguration()
 
         eh = fastapi.generate_handler(cors=cors)
         response = eh(request, exc)
@@ -183,7 +184,7 @@ class TestExceptionHandler:
         request = mock.Mock(headers={"origin": "localhost", "cookie": "something"})
         exc = ATestError("something bad")
 
-        cors = fastapi.CorsConfiguration(allow_origins=["localhost"])
+        cors = CorsConfiguration(allow_origins=["localhost"])
 
         eh = fastapi.generate_handler(cors=cors)
         response = eh(request, exc)
@@ -195,7 +196,7 @@ class TestExceptionHandler:
         request = mock.Mock(headers={"origin": "localhost2", "cookie": "something"})
         exc = ATestError("something bad")
 
-        cors = fastapi.CorsConfiguration(allow_origins=["localhost"])
+        cors = CorsConfiguration(allow_origins=["localhost"])
 
         eh = fastapi.generate_handler(cors=cors)
         response = eh(request, exc)

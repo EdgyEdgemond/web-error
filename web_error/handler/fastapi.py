@@ -10,10 +10,12 @@ from starlette.responses import JSONResponse
 
 from web_error import constant
 from web_error.error import HttpCodeException, HttpException
-from web_error.handler.starlette import CorsConfiguration, cors_wrapper_factory
+from web_error.handler.starlette import cors_wrapper_factory
 
 if typing.TYPE_CHECKING:
     from starlette.requests import Request
+
+    from web_error.cors import CorsConfiguration
 
 logger_ = logging.getLogger(__name__)
 

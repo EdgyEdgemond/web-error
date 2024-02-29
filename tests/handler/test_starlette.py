@@ -7,6 +7,7 @@ from starlette.applications import Starlette
 from starlette.exceptions import HTTPException
 
 from web_error import constant, error
+from web_error.cors import CorsConfiguration
 from web_error.handler import starlette
 
 
@@ -140,7 +141,7 @@ class TestExceptionHandler:
     def test_cors_no_origin(self):
         request = mock.Mock(headers={})
         exc = ATestError("something bad")
-        cors = starlette.CorsConfiguration()
+        cors = CorsConfiguration()
 
         eh = starlette.generate_handler(cors=cors)
         response = eh(request, exc)
@@ -150,7 +151,7 @@ class TestExceptionHandler:
     def test_error_with_origin(self):
         request = mock.Mock(headers={"origin": "localhost"})
         exc = ATestError("something bad")
-        cors = starlette.CorsConfiguration()
+        cors = CorsConfiguration()
 
         eh = starlette.generate_handler(cors=cors)
         response = eh(request, exc)
@@ -162,7 +163,7 @@ class TestExceptionHandler:
         request = mock.Mock(headers={"origin": "localhost", "cookie": "something"})
         exc = ATestError("something bad")
 
-        cors = starlette.CorsConfiguration()
+        cors = CorsConfiguration()
 
         eh = starlette.generate_handler(cors=cors)
         response = eh(request, exc)
@@ -174,7 +175,7 @@ class TestExceptionHandler:
         request = mock.Mock(headers={"origin": "localhost", "cookie": "something"})
         exc = ATestError("something bad")
 
-        cors = starlette.CorsConfiguration(allow_origins=["localhost"])
+        cors = CorsConfiguration(allow_origins=["localhost"])
 
         eh = starlette.generate_handler(cors=cors)
         response = eh(request, exc)
@@ -186,7 +187,7 @@ class TestExceptionHandler:
         request = mock.Mock(headers={"origin": "localhost2", "cookie": "something"})
         exc = ATestError("something bad")
 
-        cors = starlette.CorsConfiguration(allow_origins=["localhost"])
+        cors = CorsConfiguration(allow_origins=["localhost"])
 
         eh = starlette.generate_handler(cors=cors)
         response = eh(request, exc)

@@ -13,15 +13,12 @@ python = "^3.9"
 
 [tool.poetry.dev-dependencies]
 
-aiohttp = "*"
-pyramid = "*"
-flask = "*"
 fastapi = "*"
 
 changelog-gen = "^0.8.1"
 pytest = "~7.4.3"
 pytest-asyncio = "^0.21"
-pytest-cov = "^3.0.0"
+pytest-cov = "^4.1.0"
 pytest-httpx = "^0.26.0"
 pytest-random-order = "^1.0"
 

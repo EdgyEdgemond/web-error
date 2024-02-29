@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import dataclasses
 import logging
 import typing
 
@@ -14,15 +13,9 @@ from web_error.error import HttpCodeException, HttpException
 if typing.TYPE_CHECKING:
     from starlette.requests import Request
 
+    from web_error.cors import CorsConfiguration
+
 logger_ = logging.getLogger(__name__)
-
-
-@dataclasses.dataclass
-class CorsConfiguration:
-    allow_origins: list[str] = dataclasses.field(default_factory=lambda: ["*"])
-    allow_methods: list[str] = dataclasses.field(default_factory=lambda: ["*"])
-    allow_headers: list[str] = dataclasses.field(default_factory=lambda: ["*"])
-    allow_credentials: bool = True
 
 
 def cors_wrapper_factory(
