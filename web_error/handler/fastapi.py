@@ -56,7 +56,7 @@ def exception_handler_factory(
                     status=exc.status_code,
                 )
             )
-            headers = exc.headers
+            headers = exc.headers or headers
 
         if isinstance(exc, RequestValidationError):
             wrapper = unhandled_wrappers.get("422")

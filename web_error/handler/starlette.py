@@ -104,7 +104,7 @@ def exception_handler_factory(
                     status=exc.status_code,
                 )
             )
-            headers = exc.headers
+            headers = exc.headers or headers
 
         if isinstance(exc, HttpException):
             ret = exc

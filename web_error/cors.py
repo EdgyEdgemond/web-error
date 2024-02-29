@@ -5,7 +5,7 @@ import dataclasses
 
 @dataclasses.dataclass
 class CorsConfiguration:
-    allow_origins: list[str] = dataclasses.field(default_factory=lambda: ["*"])
-    allow_methods: list[str] = dataclasses.field(default_factory=lambda: ["*"])
-    allow_headers: list[str] = dataclasses.field(default_factory=lambda: ["*"])
-    allow_credentials: bool = True
+    allow_origins: list[str]
+    allow_methods: list[str]
+    allow_headers: list[str]
+    allow_credentials: bool
