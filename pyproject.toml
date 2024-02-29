@@ -69,5 +69,5 @@ docstring-quotes = "double"
 convention = "google"
 
 [build-system]
-requires = ["poetry>=1.1,<2.0"]
-build-backend = "poetry.masonry.api"
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
