@@ -123,6 +123,9 @@ def exception_handler_factory(
                 msg = f"Removed {k}: {v}"
                 logger.debug(msg)
 
+        if not legacy:
+            headers["content-type"] = "application/problem+json"
+
         return JSONResponse(
             status_code=ret.status,
             content=ret.marshal(strip_debug=strip_debug, legacy=legacy),
