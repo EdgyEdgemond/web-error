@@ -9,7 +9,8 @@
 `web_error` is a set of exceptions and handlers for use in starlette/fastapi
 applications to support easy error management and responses
 
-Each exception easily marshals to JSON based on the RFC9457 spec for use in api
+Each exception easily marshals to JSON based on the
+[[RFC9457](https://www.rfc-editor.org/rfc/rfc9457.html)] spec for use in api
 errors.
 
 ## Errors
