@@ -7,7 +7,7 @@ import pytest
 from starlette.applications import Starlette
 from starlette.exceptions import HTTPException
 
-from web_error import constant, error
+from web_error import error
 from web_error.cors import CorsConfiguration
 from web_error.handler import starlette
 
@@ -66,7 +66,7 @@ class TestExceptionHandler:
         )
         response = eh(request, exc)
 
-        assert response.status_code == constant.HTTPStatus.INTERNAL_SERVER_ERROR
+        assert response.status_code == http.HTTPStatus.INTERNAL_SERVER_ERROR
         assert json.loads(response.body) == {
             "title": "Unhandled exception occurred.",
             "details": "Something went bad",
@@ -94,7 +94,7 @@ class TestExceptionHandler:
         )
         response = eh(request, exc)
 
-        assert response.status_code == constant.HTTPStatus.INTERNAL_SERVER_ERROR
+        assert response.status_code == http.HTTPStatus.INTERNAL_SERVER_ERROR
         assert json.loads(response.body) == {
             "message": "Unhandled exception occurred.",
             "debug_message": "Something went bad",
@@ -117,7 +117,7 @@ class TestExceptionHandler:
         )
         response = eh(request, exc)
 
-        assert response.status_code == constant.HTTPStatus.INTERNAL_SERVER_ERROR
+        assert response.status_code == http.HTTPStatus.INTERNAL_SERVER_ERROR
         assert json.loads(response.body) == {
             "title": "Unhandled exception occurred.",
             "type": "custom-unhandled-exception",
@@ -138,7 +138,7 @@ class TestExceptionHandler:
         )
         response = eh(request, exc)
 
-        assert response.status_code == constant.HTTPStatus.INTERNAL_SERVER_ERROR
+        assert response.status_code == http.HTTPStatus.INTERNAL_SERVER_ERROR
         assert json.loads(response.body) == {
             "message": "Unhandled exception occurred.",
             "code": "E000",
@@ -153,7 +153,7 @@ class TestExceptionHandler:
         eh = starlette.generate_handler(logger=logger)
         response = eh(request, exc)
 
-        assert response.status_code == constant.HTTPStatus.INTERNAL_SERVER_ERROR
+        assert response.status_code == http.HTTPStatus.INTERNAL_SERVER_ERROR
         assert json.loads(response.body) == {
             "title": "Unhandled exception occurred.",
             "details": "Something went bad",
@@ -172,7 +172,7 @@ class TestExceptionHandler:
         eh = starlette.generate_handler()
         response = eh(request, exc)
 
-        assert response.status_code == constant.HTTPStatus.INTERNAL_SERVER_ERROR
+        assert response.status_code == http.HTTPStatus.INTERNAL_SERVER_ERROR
         assert json.loads(response.body) == {
             "title": "This is an error.",
             "details": "something bad",
@@ -188,7 +188,7 @@ class TestExceptionHandler:
         eh = starlette.generate_handler(legacy=True)
         response = eh(request, exc)
 
-        assert response.status_code == constant.HTTPStatus.INTERNAL_SERVER_ERROR
+        assert response.status_code == http.HTTPStatus.INTERNAL_SERVER_ERROR
         assert json.loads(response.body) == {
             "message": "This is an error.",
             "debug_message": "something bad",
@@ -197,12 +197,12 @@ class TestExceptionHandler:
 
     def test_starlette_error(self):
         request = mock.Mock()
-        exc = HTTPException(constant.HTTPStatus.NOT_FOUND, "something bad")
+        exc = HTTPException(http.HTTPStatus.NOT_FOUND, "something bad")
 
         eh = starlette.generate_handler()
         response = eh(request, exc)
 
-        assert response.status_code == constant.HTTPStatus.NOT_FOUND
+        assert response.status_code == http.HTTPStatus.NOT_FOUND
         assert json.loads(response.body) == {
             "title": "Unhandled HTTPException occurred.",
             "details": exc.detail,

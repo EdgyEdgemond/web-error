@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import http
 import json
 import logging
 import typing
@@ -9,7 +10,6 @@ from fastapi.exceptions import RequestValidationError
 from starlette.exceptions import HTTPException
 from starlette.responses import JSONResponse
 
-from web_error import constant
 from web_error.error import HttpCodeException, HttpException
 from web_error.handler.starlette import cors_wrapper_factory
 
@@ -69,7 +69,7 @@ def exception_handler_factory(
         if isinstance(exc, HttpException):
             ret = exc
 
-        if ret.status >= constant.HTTPStatus.INTERNAL_SERVER_ERROR:
+        if ret.status >= http.HTTPStatus.INTERNAL_SERVER_ERROR:
             logger.exception(ret.title, exc_info=(type(exc), exc, exc.__traceback__))
 
         if strip_debug and (ret.details or ret.extras):

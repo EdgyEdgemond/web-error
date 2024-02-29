@@ -8,7 +8,7 @@ from __future__ import annotations
 import re
 import typing
 
-convert_re = re.compile(r"(?<!^)(?=[A-Z])")
+CONVERT_RE = re.compile(r"(?<!^)(?=[A-Z])")
 
 
 class HttpException(Exception):  # noqa: N818
@@ -36,7 +36,7 @@ class HttpException(Exception):  # noqa: N818
     @property
     def type(self: typing.Self) -> str:
         type_ = self.__class__.__name__.replace("Error", "")
-        type_ = convert_re.sub("-", type_).lower()
+        type_ = CONVERT_RE.sub("-", type_).lower()
         return self._code if self._code else type_
 
     def marshal(self: typing.Self, *, strip_debug: bool = False, legacy: bool = False) -> dict[str, typing.Any]:
@@ -78,15 +78,14 @@ class HttpException(Exception):  # noqa: N818
 
 class HttpCodeException(HttpException):
     code = None
-    title = None
-    status = None
+    title = "Base http exception."
+    status = 500
 
     def __init__(self: typing.Self, details: str | None = None, **kwargs) -> None:
         super().__init__(self.title, code=self.code, details=details, status=self.status, **kwargs)
 
 
-class ServerException(HttpCodeException):
-    status = 500
+class ServerException(HttpCodeException): ...
 
 
 class BadRequestException(HttpCodeException):

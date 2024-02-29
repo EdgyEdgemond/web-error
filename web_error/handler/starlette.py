@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import http
 import logging
 import typing
 from warnings import warn
@@ -8,7 +9,6 @@ from starlette.exceptions import HTTPException
 from starlette.middleware.cors import CORSMiddleware
 from starlette.responses import JSONResponse
 
-from web_error import constant
 from web_error.error import HttpCodeException, HttpException
 
 if typing.TYPE_CHECKING:
@@ -109,7 +109,7 @@ def exception_handler_factory(
         if isinstance(exc, HttpException):
             ret = exc
 
-        if ret.status >= constant.HTTPStatus.INTERNAL_SERVER_ERROR:
+        if ret.status >= http.HTTPStatus.INTERNAL_SERVER_ERROR:
             logger.exception(ret.title, exc_info=(type(exc), exc, exc.__traceback__))
 
         if strip_debug and (ret.details or ret.extras):
